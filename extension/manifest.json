@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Voice Dictation Browser Extension",
+  "short_name": "Voice Dictation",
+  "version": "0.1.0",
+  "description": "Dictate text into supported fields using a FastAPI speech-to-text backend.",
+  "permissions": ["activeTab"],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}

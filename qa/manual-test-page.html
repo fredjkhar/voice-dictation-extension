@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voice Dictation Manual Test Page</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 72px;
+        color: #111827;
+        background: #f8fafc;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      h2 {
+        margin: 28px 0 12px;
+        font-size: 18px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+      }
+
+      label,
+      .field-group {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      span {
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      input,
+      textarea,
+      [contenteditable="true"],
+      [role="textbox"] {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        color: #111827;
+        font: inherit;
+        min-height: 40px;
+        padding: 9px 10px;
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      [contenteditable="true"],
+      [role="textbox"] {
+        min-height: 86px;
+      }
+
+      .panel {
+        margin-top: 20px;
+        padding: 16px;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .ignored {
+        opacity: 0.85;
+      }
+
+      .event-log {
+        min-height: 88px;
+        margin-top: 8px;
+        padding: 10px;
+        overflow: auto;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #0f172a;
+        color: #e2e8f0;
+        font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Voice Dictation Manual Test Page</h1>
+    <p>Use this page to verify which fields show the extension Mic button and receive transcripts.</p>
+
+    <section class="panel">
+      <h2>Supported Fields</h2>
+      <div class="grid">
+        <label>
+          <span>Text input</span>
+          <input type="text" placeholder="Dictate into text">
+        </label>
+        <label>
+          <span>Search input</span>
+          <input type="search" placeholder="Dictate a search">
+        </label>
+        <label>
+          <span>Email input</span>
+          <input type="email" placeholder="name@example.com">
+        </label>
+        <label>
+          <span>URL input</span>
+          <input type="url" placeholder="https://example.com">
+        </label>
+        <label>
+          <span>Telephone input</span>
+          <input type="tel" placeholder="555-0100">
+        </label>
+        <label>
+          <span>Textarea</span>
+          <textarea placeholder="Dictate multiple lines"></textarea>
+        </label>
+        <div class="field-group">
+          <span>contenteditable</span>
+          <div contenteditable="true">Place cursor here and dictate.</div>
+        </div>
+        <div class="field-group">
+          <span>role textbox</span>
+          <div role="textbox" tabindex="0" contenteditable="true">Place cursor here and dictate.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel ignored">
+      <h2>Ignored Fields</h2>
+      <div class="grid">
+        <label>
+          <span>Password</span>
+          <input type="password" placeholder="No mic button">
+        </label>
+        <label>
+          <span>Readonly</span>
+          <input type="text" readonly value="Readonly field">
+        </label>
+        <label>
+          <span>Disabled</span>
+          <input type="text" disabled value="Disabled field">
+        </label>
+        <label>
+          <span>Payment-like field</span>
+          <input type="text" name="credit-card-number" autocomplete="cc-number" placeholder="No mic button">
+        </label>
+        <label>
+          <span>File</span>
+          <input type="file">
+        </label>
+        <label>
+          <span>Checkbox</span>
+          <input type="checkbox">
+        </label>
+        <label>
+          <span>Radio</span>
+          <input type="radio" name="ignored-radio">
+        </label>
+      </div>
+      <input type="hidden" value="hidden field">
+    </section>
+
+    <section class="panel">
+      <h2>Input Event Log</h2>
+      <p>When text is inserted, supported fields should dispatch input/change events.</p>
+      <div id="eventLog" class="event-log" aria-live="polite"></div>
+    </section>
+
+    <script>
+      const eventLog = document.querySelector("#eventLog");
+
+      function writeLog(event) {
+        const target = event.target;
+        const label = target.closest("label")?.querySelector("span")?.textContent
+          || target.previousElementSibling?.textContent
+          || target.getAttribute("role")
+          || target.tagName.toLowerCase();
+        const line = `${new Date().toLocaleTimeString()} ${event.type}: ${label}`;
+        eventLog.textContent = `${line}\n${eventLog.textContent}`.slice(0, 2000);
+      }
+
+      document.addEventListener("input", writeLog, true);
+      document.addEventListener("change", writeLog, true);
+    </script>
+  </body>
+</html>

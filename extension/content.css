@@ -1,0 +1,67 @@
+.voice-dictation-mic-button {
+  position: fixed;
+  z-index: 2147483647;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  background: #111827;
+  box-shadow: 0 8px 20px rgb(17 24 39 / 24%);
+  color: #ffffff;
+  cursor: pointer;
+  font: 700 11px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.voice-dictation-mic-button:hover {
+  background: #374151;
+}
+
+.voice-dictation-mic-button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+
+.voice-dictation-mic-button:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.voice-dictation-mic-button--recording {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.voice-dictation-mic-button--success {
+  background: #047857;
+  border-color: #047857;
+}
+
+.voice-dictation-mic-button--error {
+  background: #92400e;
+  border-color: #92400e;
+}
+
+.voice-dictation-mic-button[hidden] {
+  display: none;
+}
+
+.voice-dictation-status {
+  position: fixed;
+  z-index: 2147483647;
+  max-width: 220px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #111827;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgb(17 24 39 / 20%);
+  font: 500 12px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  pointer-events: none;
+}
+
+.voice-dictation-status[hidden] {
+  display: none;
+}
