@@ -8,6 +8,10 @@ The MVP will use Manifest V3 with plain JavaScript, content scripts for page int
 
 This is an MVP test build. It can detect supported fields, show a microphone button beside the active field, record a short local audio clip after the user clicks the button, send the clip to the local FastAPI backend, and insert the backend transcript. The extension does not call xAI directly.
 
+## Icons
+
+The extension includes PNG icons at `16`, `32`, `48`, and `128` pixels under `icons/`. They are referenced by `manifest.json` for Chrome extension surfaces.
+
 ## Load Locally
 
 1. Open `chrome://extensions` in Chrome.
@@ -38,7 +42,7 @@ Extension setup:
 2. Open `chrome://extensions`.
 3. Enable Developer mode.
 4. Load or reload this `extension/` folder as an unpacked extension.
-5. Open or reload a normal web page with a text field.
+5. Open or reload a normal web page with a text field. For local QA, use `http://127.0.0.1:8080/qa/manual-test-page.html`.
 6. Focus a supported field such as a text input or textarea.
 7. Confirm a small Mic button appears beside the field.
 8. Click the Mic button.

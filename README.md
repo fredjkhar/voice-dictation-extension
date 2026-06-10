@@ -2,6 +2,8 @@
 
 A Chrome browser extension and FastAPI backend for dictating text into web input fields using speech-to-text.
 
+![Voice dictation MVP flow](docs/images/extension-flow.svg)
+
 ## Architecture
 
 The browser extension will interact with supported page fields, record short audio clips after explicit user action, and send audio to the FastAPI backend. The backend will call xAI Speech-to-Text and return a transcript for insertion into the active field.
@@ -34,7 +36,14 @@ The extension records a short user-triggered clip, sends it to the local FastAPI
 
 ## Quick Start
 
-Backend:
+Clone and enter the project:
+
+```bash
+git clone https://github.com/fredjkhar/voice-dictation-extension.git
+cd voice-dictation-extension
+```
+
+Backend setup:
 
 ```bash
 cd backend
@@ -50,7 +59,7 @@ Set `XAI_API_KEY` in `backend/.env`, then run:
 uvicorn app.main:app --reload
 ```
 
-Extension:
+Extension setup:
 
 1. Open `chrome://extensions`.
 2. Enable Developer mode.
@@ -69,6 +78,8 @@ Open:
 ```text
 http://127.0.0.1:8080/qa/manual-test-page.html
 ```
+
+![Manual QA page preview](docs/images/manual-test-page.svg)
 
 ## Verification
 
@@ -105,3 +116,13 @@ Before committing:
 - Confirm `backend/.venv/`, `__pycache__/`, and `.pytest_cache/` are not in `git status`.
 - Run the verification commands above.
 - Do not commit real API keys, raw audio, or generated local caches.
+
+## GitHub Project Hygiene
+
+Issue templates are available for:
+
+- Bug reports
+- Hardening tasks
+- Future feature requests
+
+Use hardening tasks for reliability, privacy, documentation, and QA work. Use feature requests for product scope changes.

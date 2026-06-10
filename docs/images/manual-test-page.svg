@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Manual QA page preview</title>
+  <desc id="desc">Illustration of the local manual test page with supported and ignored fields.</desc>
+  <rect width="960" height="540" fill="#f8fafc"/>
+  <rect x="72" y="48" width="816" height="444" rx="10" fill="#ffffff" stroke="#dbe3ef"/>
+  <text x="108" y="98" fill="#111827" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="30" font-weight="700">Voice Dictation Manual Test Page</text>
+  <text x="108" y="130" fill="#4b5563" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15">Verify supported fields, ignored fields, and input/change events.</text>
+  <text x="108" y="176" fill="#111827" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="19" font-weight="700">Supported Fields</text>
+  <g fill="#ffffff" stroke="#cbd5e1">
+    <rect x="108" y="198" width="220" height="46" rx="7"/>
+    <rect x="356" y="198" width="220" height="46" rx="7"/>
+    <rect x="604" y="198" width="220" height="46" rx="7"/>
+    <rect x="108" y="276" width="220" height="88" rx="7"/>
+    <rect x="356" y="276" width="220" height="88" rx="7"/>
+    <rect x="604" y="276" width="220" height="88" rx="7"/>
+  </g>
+  <g fill="#64748b" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14">
+    <text x="126" y="226">input[type=text]</text>
+    <text x="374" y="226">textarea</text>
+    <text x="622" y="226">contenteditable</text>
+    <text x="126" y="316">email / url / tel</text>
+    <text x="374" y="316">role=textbox</text>
+    <text x="622" y="316">event log</text>
+  </g>
+  <circle cx="846" cy="220" r="22" fill="#111827"/>
+  <text x="835" y="225" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="700">Mic</text>
+  <rect x="604" y="390" width="220" height="34" rx="7" fill="#111827"/>
+  <text x="622" y="412" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13">Recording / Transcribing status</text>
+  <text x="108" y="432" fill="#111827" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="19" font-weight="700">Ignored Fields</text>
+  <g fill="#f1f5f9" stroke="#cbd5e1">
+    <rect x="108" y="448" width="152" height="30" rx="6"/>
+    <rect x="278" y="448" width="152" height="30" rx="6"/>
+    <rect x="448" y="448" width="152" height="30" rx="6"/>
+  </g>
+  <g fill="#64748b" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12">
+    <text x="124" y="468">password</text>
+    <text x="294" y="468">payment</text>
+    <text x="464" y="468">disabled</text>
+  </g>
+</svg>
