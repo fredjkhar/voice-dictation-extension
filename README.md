@@ -29,6 +29,7 @@ The local MVP is working:
 - Transcript is inserted back into the focused field.
 - xAI API key stays backend-only in `.env`.
 - Backend tests and a local manual QA page are available.
+- Backend Docker deployment files are available.
 
 ## Local Development
 
@@ -109,6 +110,12 @@ node --check extension/popup.js
 - Extension stuck on `Transcribing`: reload the extension in `chrome://extensions`, refresh the page, and retry with a short recording.
 - Mic button does not appear: reload the page after loading the extension and focus a supported non-sensitive field.
 - Custom backend URL does not work: use `http://127.0.0.1`, `http://localhost`, or an HTTPS URL. The extension never accepts an xAI URL or xAI API key.
+
+## Deployment
+
+The backend includes Docker deployment files under `backend/`. See [backend/DEPLOYMENT.md](backend/DEPLOYMENT.md).
+
+After deploying the backend, set the extension popup Backend URL to the deployed HTTPS `/api/transcribe` endpoint.
 
 ## Commit Readiness
 

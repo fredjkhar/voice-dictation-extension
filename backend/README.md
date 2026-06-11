@@ -12,6 +12,7 @@ The `/api/transcribe` endpoint validates the uploaded audio file, sends it to xA
 - FastAPI
 - httpx
 - python-dotenv
+- Docker-ready deployment files
 
 ## Local Setup
 
@@ -66,6 +67,22 @@ Run backend tests:
 ```bash
 pytest
 ```
+
+## Docker
+
+Build from this folder:
+
+```bash
+docker build -t voice-dictation-backend .
+```
+
+Run locally:
+
+```bash
+docker run --rm -p 8000:8000 --env-file .env voice-dictation-backend
+```
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for production setup notes.
 
 ## Troubleshooting
 
