@@ -1,7 +1,11 @@
+importScripts("config.js");
+
 const TRANSCRIBE_AUDIO_MESSAGE = "VOICE_DICTATION_TRANSCRIBE_AUDIO";
-const DEFAULT_BACKEND_URL = "http://127.0.0.1:8000/api/transcribe";
+const TEST_BACKEND_MESSAGE = "VOICE_DICTATION_TEST_BACKEND";
 const TRANSCRIBE_TIMEOUT_MS = 45000;
+const HEALTH_CHECK_TIMEOUT_MS = 10000;
 const MAX_AUDIO_UPLOAD_BYTES = 10 * 1024 * 1024;
+const { DEFAULT_BACKEND_URL, getHealthUrl, normalizeBackendUrl } = globalThis.VoiceDictationConfig;
 
 function parseAudioDataUrl(dataUrl) {
   const match = /^data:(audio\/[^;,]+)(?:;[^,]*)?;base64,(.+)$/i.exec(dataUrl);
@@ -50,20 +54,34 @@ function getStoredSettings() {
   });
 }
 
-function normalizeBackendUrl(value) {
-  try {
-    const url = new URL(value || DEFAULT_BACKEND_URL);
-    const isLocalHttp = url.protocol === "http:" && ["127.0.0.1", "localhost"].includes(url.hostname);
-    const isHttps = url.protocol === "https:";
-    const isXaiHost = url.hostname === "x.ai" || url.hostname.endsWith(".x.ai");
+async function testBackend(backendUrl) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT_MS);
 
-    if ((!isLocalHttp && !isHttps) || isXaiHost) {
-      return DEFAULT_BACKEND_URL;
+  try {
+    const response = await fetch(getHealthUrl(backendUrl), {
+      method: "GET",
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      return { ok: false, message: `Backend health check failed (${response.status}).` };
     }
 
-    return url.toString();
-  } catch (_error) {
-    return DEFAULT_BACKEND_URL;
+    const data = await response.json();
+
+    if (data?.status !== "ok") {
+      return { ok: false, message: "Backend returned an unexpected health response." };
+    }
+
+    return { ok: true, message: "Backend is reachable." };
+  } catch (error) {
+    return {
+      ok: false,
+      message: error?.name === "AbortError" ? "Backend health check timed out." : "Could not reach the backend.",
+    };
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
@@ -148,6 +166,11 @@ async function transcribeAudio(message) {
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type === TEST_BACKEND_MESSAGE) {
+    testBackend(message.backendUrl).then(sendResponse);
+    return true;
+  }
+
   if (message?.type !== TRANSCRIBE_AUDIO_MESSAGE) {
     return false;
   }
@@ -157,7 +180,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     .catch((error) => {
       sendResponse({
         ok: false,
-        message: error?.name === "AbortError" ? "Backend transcription timed out." : "Could not reach the local backend.",
+        message: error?.name === "AbortError" ? "Backend transcription timed out." : "Could not reach the backend.",
       });
     });
 

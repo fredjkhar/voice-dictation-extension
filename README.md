@@ -24,16 +24,17 @@ The local MVP is working:
 
 - Chrome extension detects supported fields and ignores unsafe fields.
 - Mic button records only after explicit user click.
-- Extension sends audio to the local FastAPI backend.
+- Extension sends audio to the configured FastAPI backend.
 - Backend calls xAI Speech-to-Text.
 - Transcript is inserted back into the focused field.
 - xAI API key stays backend-only in `.env`.
 - Backend tests and a local manual QA page are available.
 - Backend Docker deployment files are available.
+- Production endpoint validation and deployment smoke tests are available.
 
 ## Local Development
 
-The extension records a short user-triggered clip, sends it to the local FastAPI backend, and inserts the transcript returned by the backend. The backend calls xAI Speech-to-Text using `XAI_API_KEY` from environment variables. The extension must never contain the xAI API key or call xAI directly.
+The extension records a short user-triggered clip, sends it to the configured FastAPI backend, and inserts the transcript returned by the backend. The backend calls xAI Speech-to-Text using `XAI_API_KEY` from environment variables. The extension must never contain the xAI API key or call xAI directly.
 
 ## Quick Start
 
@@ -100,6 +101,13 @@ python3 -m json.tool extension/manifest.json >/dev/null
 node --check extension/content.js
 node --check extension/background.js
 node --check extension/popup.js
+node --check extension/config.js
+```
+
+Validate and create the Chrome Web Store draft ZIP:
+
+```bash
+python3 scripts/package_extension.py
 ```
 
 ## Troubleshooting
@@ -109,13 +117,24 @@ node --check extension/popup.js
 - `503`: `XAI_API_KEY` is missing or not loaded by the backend.
 - Extension stuck on `Transcribing`: reload the extension in `chrome://extensions`, refresh the page, and retry with a short recording.
 - Mic button does not appear: reload the page after loading the extension and focus a supported non-sensitive field.
-- Custom backend URL does not work: use `http://127.0.0.1`, `http://localhost`, or an HTTPS URL. The extension never accepts an xAI URL or xAI API key.
+- Backend URL does not work: use the production Render endpoint or local HTTP on `127.0.0.1` or `localhost`. Other remote hosts and xAI URLs are rejected.
 
 ## Deployment
 
 The backend includes Docker deployment files under `backend/`. See [backend/DEPLOYMENT.md](backend/DEPLOYMENT.md).
 
 After deploying the backend, set the extension popup Backend URL to the deployed HTTPS `/api/transcribe` endpoint.
+
+Use the popup's Test Backend control to verify `/health`, then follow [qa/deployment-smoke-test.md](qa/deployment-smoke-test.md) for a complete production-path check. The backend also includes a reusable command-line smoke test:
+
+```bash
+cd backend
+python scripts/smoke_test.py https://YOUR_BACKEND_HOST
+```
+
+## Chrome Web Store Readiness
+
+Privacy and release-preparation materials are available in [PRIVACY.md](PRIVACY.md) and [store/](store/). The generated ZIP under `dist/` is intentionally ignored by Git and should be rebuilt from the reviewed source before each draft upload.
 
 ## Commit Readiness
 

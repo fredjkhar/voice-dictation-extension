@@ -6,7 +6,7 @@ The MVP will use Manifest V3 with plain JavaScript, content scripts for page int
 
 ## Current State
 
-This is an MVP test build. It can detect supported fields, show a microphone button beside the active field, record a short local audio clip after the user clicks the button, send the clip to the local FastAPI backend, and insert the backend transcript. The extension does not call xAI directly.
+This is an MVP test build. It can detect supported fields, show a microphone button beside the active field, record a short audio clip after the user clicks the button, send the clip to the configured FastAPI backend, and insert the backend transcript. The extension does not call xAI directly.
 
 ## Icons
 
@@ -24,10 +24,22 @@ The extension includes PNG icons at `16`, `32`, `48`, and `128` pixels under `ic
 
 The popup stores local settings with `chrome.storage.local`:
 
-- Backend URL: defaults to `http://127.0.0.1:8000/api/transcribe`.
+- Backend URL: defaults to `https://voice-dictation-extension.onrender.com/api/transcribe`.
 - Recording limit: defaults to 5 seconds and is clamped between 1 and 30 seconds.
+- Test Backend: checks the corresponding `/health` endpoint without recording or uploading audio.
 
-The backend URL may be local HTTP (`localhost` or `127.0.0.1`) or HTTPS. xAI hostnames are rejected by the extension settings; xAI remains backend-only.
+The backend URL must end with `/api/transcribe`. The release build permits the production Render backend or local HTTP (`localhost` or `127.0.0.1`) for development. Other remote hosts and xAI hostnames are rejected; xAI remains backend-only.
+
+## Deployed Backend
+
+1. Deploy the FastAPI backend behind HTTPS.
+2. Open the extension popup.
+3. Enter `https://YOUR_BACKEND_HOST/api/transcribe`.
+4. Click Save Settings.
+5. Click Test Backend and confirm the backend is reachable.
+6. Run a short dictation test on a non-sensitive text field.
+
+The connectivity check calls only `/health`; it does not access xAI or upload audio.
 
 ## Manual Test
 
@@ -44,6 +56,8 @@ Set `XAI_API_KEY` in `.env`, then run:
 source .venv/bin/activate
 uvicorn app.main:app --reload
 ```
+
+Open the extension popup and change Backend URL to `http://127.0.0.1:8000/api/transcribe` before local-backend testing. Fresh installations default to the production HTTPS backend.
 
 Extension setup:
 
@@ -73,3 +87,4 @@ For structured QA, use the checklist and local test page in `../qa/`.
 - If the button stays on Transcribing, reload the extension and test page, then retry with a short recording.
 - If transcription fails, check the FastAPI terminal logs first. The extension intentionally shows safe, generic error messages.
 - If a custom backend fails, verify the URL is local HTTP or HTTPS and points directly to `/api/transcribe`.
+- If Test Backend fails, open the deployed `/health` URL directly and check the hosting provider logs, TLS certificate, and CORS configuration.

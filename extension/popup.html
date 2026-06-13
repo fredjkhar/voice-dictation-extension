@@ -70,6 +70,13 @@
         opacity: 0.65;
       }
 
+      #testBackend {
+        margin-top: 8px;
+        border-color: #64748b;
+        background: #ffffff;
+        color: #1f2937;
+      }
+
       #status {
         min-height: 18px;
         margin-top: 10px;
@@ -91,8 +98,10 @@
       </label>
     </form>
     <button id="saveSettings" type="button">Save Settings</button>
+    <button id="testBackend" type="button">Test Backend</button>
     <button id="insertFakeText" type="button">Insert Test Text</button>
     <p id="status" aria-live="polite"></p>
+    <script src="config.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

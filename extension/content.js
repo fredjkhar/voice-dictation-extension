@@ -206,8 +206,8 @@
 
     if (state === "transcribing") {
       button.textContent = "...";
-      button.title = "Sending recording to local backend";
-      button.setAttribute("aria-label", "Sending recording to local backend");
+      button.title = "Sending recording to backend";
+      button.setAttribute("aria-label", "Sending recording to backend");
       setStatusMessage(message || "Transcribing");
       return;
     }

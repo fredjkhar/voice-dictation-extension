@@ -1,12 +1,14 @@
 const INSERT_FAKE_TEXT_MESSAGE = "VOICE_DICTATION_INSERT_FAKE_TEXT";
+const TEST_BACKEND_MESSAGE = "VOICE_DICTATION_TEST_BACKEND";
 const FAKE_TRANSCRIPT = "This is fake dictation text.";
-const DEFAULT_BACKEND_URL = "http://127.0.0.1:8000/api/transcribe";
 const DEFAULT_RECORDING_DURATION_SECONDS = 5;
 const MIN_RECORDING_DURATION_SECONDS = 1;
 const MAX_RECORDING_DURATION_SECONDS = 30;
+const { DEFAULT_BACKEND_URL, validateBackendUrl } = globalThis.VoiceDictationConfig;
 
 const insertButton = document.querySelector("#insertFakeText");
 const saveSettingsButton = document.querySelector("#saveSettings");
+const testBackendButton = document.querySelector("#testBackend");
 const backendUrlInput = document.querySelector("#backendUrl");
 const recordingDurationInput = document.querySelector("#recordingDurationSeconds");
 const statusText = document.querySelector("#status");
@@ -18,23 +20,6 @@ function setStatus(message) {
 async function getActiveTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab;
-}
-
-function normalizeBackendUrl(value) {
-  try {
-    const url = new URL(value || DEFAULT_BACKEND_URL);
-    const isLocalHttp = url.protocol === "http:" && ["127.0.0.1", "localhost"].includes(url.hostname);
-    const isHttps = url.protocol === "https:";
-    const isXaiHost = url.hostname === "x.ai" || url.hostname.endsWith(".x.ai");
-
-    if ((!isLocalHttp && !isHttps) || isXaiHost) {
-      return DEFAULT_BACKEND_URL;
-    }
-
-    return url.toString();
-  } catch (_error) {
-    return DEFAULT_BACKEND_URL;
-  }
 }
 
 function normalizeRecordingDurationSeconds(value) {
@@ -56,22 +41,57 @@ async function loadSettings() {
     recordingDurationMs: DEFAULT_RECORDING_DURATION_SECONDS * 1000,
   });
 
-  backendUrlInput.value = normalizeBackendUrl(settings.backendUrl);
+  const backendUrl = validateBackendUrl(settings.backendUrl);
+
+  backendUrlInput.value = backendUrl.ok ? backendUrl.url : DEFAULT_BACKEND_URL;
   recordingDurationInput.value = String(normalizeRecordingDurationSeconds(settings.recordingDurationMs / 1000));
 }
 
 async function saveSettings() {
-  const backendUrl = normalizeBackendUrl(backendUrlInput.value);
+  const backendUrl = validateBackendUrl(backendUrlInput.value.trim());
+
+  if (!backendUrl.ok) {
+    setStatus(backendUrl.message);
+    backendUrlInput.focus();
+    return;
+  }
+
   const recordingDurationSeconds = normalizeRecordingDurationSeconds(recordingDurationInput.value);
 
   await chrome.storage.local.set({
-    backendUrl,
+    backendUrl: backendUrl.url,
     recordingDurationMs: recordingDurationSeconds * 1000,
   });
 
-  backendUrlInput.value = backendUrl;
+  backendUrlInput.value = backendUrl.url;
   recordingDurationInput.value = String(recordingDurationSeconds);
   setStatus("Settings saved.");
+}
+
+async function testBackend() {
+  const backendUrl = validateBackendUrl(backendUrlInput.value.trim());
+
+  if (!backendUrl.ok) {
+    setStatus(backendUrl.message);
+    backendUrlInput.focus();
+    return;
+  }
+
+  testBackendButton.disabled = true;
+  setStatus("Checking backend...");
+
+  try {
+    const response = await chrome.runtime.sendMessage({
+      type: TEST_BACKEND_MESSAGE,
+      backendUrl: backendUrl.url,
+    });
+
+    setStatus(response?.message || "Backend check failed.");
+  } catch (_error) {
+    setStatus("Unable to check the backend.");
+  } finally {
+    testBackendButton.disabled = false;
+  }
 }
 
 async function insertFakeText() {
@@ -112,4 +132,5 @@ async function insertFakeText() {
 
 insertButton.addEventListener("click", insertFakeText);
 saveSettingsButton.addEventListener("click", saveSettings);
+testBackendButton.addEventListener("click", testBackend);
 loadSettings();

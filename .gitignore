@@ -17,9 +17,13 @@ env/
 .env
 .env.*
 !.env.example
+!.env.*.example
 
 # Logs
 *.log
+
+# Release artifacts
+dist/
 
 # Local audio captures
 *.m4a

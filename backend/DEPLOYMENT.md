@@ -11,6 +11,24 @@ This guide prepares the FastAPI backend for deployment. It does not cover a spec
 
 Never place a real `XAI_API_KEY` in source control, Docker images, frontend code, or Chrome extension files.
 
+Start from the production-safe template:
+
+```bash
+cp .env.production.example .env.production
+```
+
+Replace `YOUR_EXTENSION_ID` with the ID shown for the loaded extension on `chrome://extensions`. Keep the real production file and API key outside source control.
+
+## Chrome Web Store Extension ID
+
+The Web Store assigns the final extension ID after the first ZIP is uploaded as a draft item. Before submitting that draft for review, update Render with the exact origin:
+
+```text
+BACKEND_CORS_ORIGINS=chrome-extension://FINAL_EXTENSION_ID
+```
+
+Do not add a trailing slash. During pre-release testing, the final ID and unpacked development ID may be supplied as comma-separated origins. Redeploy after changing the environment variable and verify both `/health` and a real extension transcription. See [../store/release-checklist.md](../store/release-checklist.md) for the complete sequence.
+
 ## Docker Build
 
 From the `backend/` folder:
@@ -59,9 +77,26 @@ After the backend is deployed:
 1. Open the extension popup.
 2. Set Backend URL to the deployed HTTPS endpoint ending in `/api/transcribe`.
 3. Save settings.
-4. Reload the test page and run a short dictation test.
+4. Click Test Backend and confirm `Backend is reachable.`
+5. Reload the test page and run a short dictation test.
 
 The extension must call only your backend. It must never call xAI directly.
+
+## Deployment Smoke Test
+
+With the backend dependencies installed, check the public health endpoint:
+
+```bash
+python scripts/smoke_test.py https://YOUR_BACKEND_HOST
+```
+
+Then check a real transcription with a short, non-sensitive audio file:
+
+```bash
+python scripts/smoke_test.py https://YOUR_BACKEND_HOST --audio sample.webm
+```
+
+The script exits with a nonzero status when a check fails. It does not store the uploaded audio. See [../qa/deployment-smoke-test.md](../qa/deployment-smoke-test.md) for the complete browser and backend checklist.
 
 ## Production Notes
 

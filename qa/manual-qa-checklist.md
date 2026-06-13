@@ -16,7 +16,10 @@ Use this checklist after backend or extension changes.
 
 - The unpacked extension loads without errors in `chrome://extensions`.
 - Popup settings persist after closing and reopening the popup.
-- Backend URL defaults to `http://127.0.0.1:8000/api/transcribe`.
+- Backend URL defaults to `https://voice-dictation-extension.onrender.com/api/transcribe`.
+- Backend URL rejects unapproved remote hosts, xAI URLs, and paths that do not end in `/api/transcribe`.
+- Backend URL rejects embedded credentials, query strings, and fragments.
+- Test Backend reports success when the configured backend `/health` endpoint returns `{"status":"ok"}`.
 - Recording limit defaults to 5 seconds and clamps to the allowed range.
 - The Mic button appears on supported fields only.
 - The Mic button does not appear on password, payment, hidden, readonly, disabled, checkbox, radio, or file inputs.
@@ -53,3 +56,5 @@ http://127.0.0.1:8080/qa/manual-test-page.html
 - If the button stays on Transcribing, reload the extension in `chrome://extensions`, refresh the test page, and retry with a shorter recording.
 - Check the backend terminal for `xAI STT` warning lines when the extension shows a speech-to-text error.
 - Make sure the backend is running on `http://127.0.0.1:8000`.
+
+For a deployed backend, use [deployment-smoke-test.md](deployment-smoke-test.md).

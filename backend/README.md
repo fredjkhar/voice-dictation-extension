@@ -41,6 +41,8 @@ cp .env.example .env
 
 Set `XAI_API_KEY` in `.env` before using `/api/transcribe`.
 
+For production configuration, use `.env.production.example` as a template and provide secrets through the hosting provider's environment or secret manager.
+
 For local extension testing, keep `BACKEND_CORS_ORIGINS` limited to trusted local origins. Do not use `*` in production.
 
 Run the development server:
@@ -83,6 +85,13 @@ docker run --rm -p 8000:8000 --env-file .env voice-dictation-backend
 ```
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for production setup notes.
+
+Smoke-test a deployed backend:
+
+```bash
+python scripts/smoke_test.py https://YOUR_BACKEND_HOST
+python scripts/smoke_test.py https://YOUR_BACKEND_HOST --audio sample.webm
+```
 
 ## Troubleshooting
 
