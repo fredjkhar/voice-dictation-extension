@@ -30,7 +30,7 @@ Audio and resulting transcript data are processed by:
 - The Voice Dictation FastAPI backend hosted on Render.
 - xAI, which provides the Speech-to-Text service.
 
-Render and xAI may process technical request metadata under their respective policies. No other third party receives audio or transcripts through the extension's application flow.
+Render and xAI receive the user's IP address and may process other technical request metadata as part of normal network requests under their respective policies. The extension does not request or collect GPS coordinates or precise device location. No other third party receives audio or transcripts through the extension's application flow.
 
 ## Storage And Retention
 

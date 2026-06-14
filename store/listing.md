@@ -4,7 +4,7 @@
 
 Name: Voice Dictation Browser Extension
 
-Category: Productivity
+Category: Tools
 
 Language: English
 

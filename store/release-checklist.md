@@ -22,7 +22,7 @@ This checklist prepares a draft upload. It does not authorize submission or publ
 ## Listing
 
 - [ ] Use the single-purpose statement and accurate copy in `listing.md`.
-- [ ] Choose Productivity and English unless the release plan changes.
+- [ ] Choose Tools and English unless the release plan changes.
 - [ ] Upload the existing 128x128 store icon.
 - [ ] Review `assets/screenshot-dictation-1280x800.png` and `assets/screenshot-settings-1280x800.png` at full size.
 - [ ] Review the required `assets/promo-small-440x280.png` tile at full size.
