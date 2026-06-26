@@ -51,17 +51,17 @@ async def transcribe_audio(
         raise XAIServiceError("xAI transcription request failed.") from exc
 
     if response.status_code >= 400:
-        logger.warning(
-            "xAI STT request rejected with status %s: %s",
-            response.status_code,
-            response.text[:500],
-        )
+        logger.warning("xAI STT request rejected with status %s", response.status_code)
         raise XAIServiceError("xAI transcription request was rejected.")
 
     try:
         payload = response.json()
     except ValueError as exc:
-        logger.warning("xAI STT response was not JSON: %s", response.text[:500])
+        logger.warning(
+            "xAI STT response was not JSON. status=%s content_type=%s",
+            response.status_code,
+            response.headers.get("content-type", ""),
+        )
         raise XAIServiceError("xAI transcription response was not valid JSON.") from exc
 
     text = payload.get("text")

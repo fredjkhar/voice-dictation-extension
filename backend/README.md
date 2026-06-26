@@ -41,6 +41,14 @@ cp .env.example .env
 
 Set `XAI_API_KEY` in `.env` before using `/api/transcribe`.
 
+Optional local hardening settings are included in `.env.example`:
+
+- `TRANSCRIPTION_ENABLED`: set to `false` to return a safe `503` from `/api/transcribe` without calling xAI.
+- `TRANSCRIBE_MAX_CONCURRENT_REQUESTS`: in-process concurrent transcription guard. Set to `0` to disable.
+- `TRANSCRIBE_RATE_LIMIT_REQUESTS`: in-memory request count per rate window. Set to `0` to disable.
+- `TRANSCRIBE_RATE_LIMIT_WINDOW_SECONDS`: rate-limit window length.
+- `MAX_TRANSCRIBE_CONTENT_LENGTH_BYTES`: early multipart upload content-length guard. The uploaded audio file itself is still capped at 10 MiB by app validation.
+
 For production configuration, use `.env.production.example` as a template and provide secrets through the hosting provider's environment or secret manager.
 
 For local extension testing, keep `BACKEND_CORS_ORIGINS` limited to trusted local origins. Do not use `*` in production.
@@ -96,6 +104,8 @@ python scripts/smoke_test.py https://YOUR_BACKEND_HOST --audio sample.webm
 ## Troubleshooting
 
 - `503 Speech-to-text service is not configured.` means `XAI_API_KEY` is missing from `.env` or the backend was not restarted after editing `.env`.
+- `503 Speech-to-text service is temporarily unavailable.` means `TRANSCRIPTION_ENABLED=false` is active.
+- `429 Too many transcription requests.` means the in-process rate or concurrency guard rejected the request.
 - `502 Speech-to-text service failed.` means the backend reached xAI but xAI rejected or failed the request. Check backend logs for `xAI STT` warning lines.
 - `403` from xAI usually means the xAI team needs credits, licenses, or Speech-to-Text access.
 - `400 Unsupported audio file type.` means the uploaded file MIME type is not in the allowed audio list.
