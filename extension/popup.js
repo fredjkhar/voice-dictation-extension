@@ -42,7 +42,7 @@ async function loadSettings() {
   enabledToggle.checked = settings.extensionEnabled !== false;
   backendUrlInput.value = backendUrl.ok ? backendUrl.url : DEFAULT_BACKEND_URL;
   recordingDurationInput.value = String(normalizeRecordingDurationSeconds(settings.recordingDurationMs / 1000));
-  setStatus(enabledToggle.checked ? "Ready." : "FieldMic is off.", enabledToggle.checked ? "success" : "warning");
+  setStatus(enabledToggle.checked ? "Ready." : "Dictozy is off.", enabledToggle.checked ? "success" : "warning");
 }
 
 async function saveSettings() {
@@ -64,14 +64,14 @@ async function saveSettings() {
 
   backendUrlInput.value = backendUrl.url;
   recordingDurationInput.value = String(recordingDurationSeconds);
-  setStatus(enabledToggle.checked ? "Settings saved." : "FieldMic is off.", enabledToggle.checked ? "success" : "warning");
+  setStatus(enabledToggle.checked ? "Settings saved." : "Dictozy is off.", enabledToggle.checked ? "success" : "warning");
 }
 
 async function toggleEnabled() {
   await chrome.storage.local.set({
     extensionEnabled: enabledToggle.checked,
   });
-  setStatus(enabledToggle.checked ? "FieldMic is on." : "FieldMic is off.", enabledToggle.checked ? "success" : "warning");
+  setStatus(enabledToggle.checked ? "Dictozy is on." : "Dictozy is off.", enabledToggle.checked ? "success" : "warning");
 }
 
 async function testBackend() {

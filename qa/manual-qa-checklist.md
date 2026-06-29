@@ -1,6 +1,6 @@
 # Manual QA Checklist
 
-Use this checklist after backend or extension changes.
+Use this checklist after backend, extension, listing, or release-package changes. It covers the user-visible flow first, then the technical safety checks.
 
 ## Backend
 
@@ -16,9 +16,9 @@ Use this checklist after backend or extension changes.
 
 - The unpacked extension loads without errors in `chrome://extensions`.
 - Popup settings persist after closing and reopening the popup.
-- The popup shows `FieldMic` branding and version `0.1.2` in `chrome://extensions`.
-- Turning FieldMic off hides the page microphone button and prevents recording from starting.
-- Turning FieldMic back on restores microphone behavior on supported fields.
+- The popup shows `Dictozy` branding and version `0.1.2` in `chrome://extensions`.
+- Turning Dictozy off hides the page microphone button and prevents recording from starting.
+- Turning Dictozy back on restores microphone behavior on supported fields.
 - Backend URL defaults to `https://voice-dictation-extension.onrender.com/api/transcribe`.
 - Backend URL rejects unapproved remote hosts, xAI URLs, and paths that do not end in `/api/transcribe`.
 - Backend URL rejects embedded credentials, query strings, and fragments.
@@ -40,6 +40,13 @@ Use this checklist after backend or extension changes.
 - Nested `contenteditable` fields should insert at the cursor rather than always appending.
 - Shadow DOM inputs on the local QA page should show the microphone icon button and accept inserted text.
 - xAI API keys never appear in extension files, browser console output, or network calls from the page.
+
+## Store Presentation
+
+- `store/listing.md` uses user-friendly copy for the public listing and technical language for reviewer notes.
+- `site/index.html` opens locally and presents the real 0.1.2 product without unsupported features.
+- `store/assets/screenshot-dictation-1280x800.png`, `store/assets/screenshot-settings-1280x800.png`, and `store/assets/promo-small-440x280.png` match the current Dictozy name, icon, and popup.
+- The Chrome Web Store description does not imply background recording, direct xAI calls from the extension, or features that are not implemented.
 
 ## Local Test Page
 

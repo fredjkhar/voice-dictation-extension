@@ -120,7 +120,7 @@
     dispatchInputEvents(element, nextText);
   }
 
-  globalThis.FieldMicDom = Object.freeze({
+  globalThis.DictozyDom = Object.freeze({
     EDITABLE_FIELD_SELECTOR,
     dispatchInputEvents,
     getEditableField,

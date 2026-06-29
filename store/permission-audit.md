@@ -2,6 +2,8 @@
 
 Audit date: June 13, 2026
 
+This audit explains why Dictozy `0.1.2` needs each requested permission. It is written for Chrome Web Store review and for future maintainers.
+
 ## API Permissions
 
 `storage`: retained.
@@ -39,7 +41,7 @@ Content scripts run on:
 
 Remote HTTP webpages were removed from the content-script scope because microphone recording requires a secure context and the production feature targets HTTPS pages.
 
-HTTPS page access remains broad because the extension's single purpose is to detect supported fields, display a visible Mic control, and insert the returned transcript on websites selected by the user. Reducing this to a fixed website list would prevent the core cross-site dictation behavior. The content script excludes sensitive and unsupported fields and does not send page URLs, existing field contents, or surrounding page content to the backend.
+HTTPS page access remains broad because the extension's single purpose is to detect supported fields, display a visible microphone control, and insert the returned transcript on websites selected by the user. Reducing this to a fixed website list would prevent the core cross-site dictation behavior. The content script excludes sensitive and unsupported fields and does not send page URLs, existing field contents, or surrounding page content to the backend.
 
 ## Microphone Access
 

@@ -2,18 +2,18 @@
 
 Effective date: June 13, 2026
 
-FieldMic: Voice Dictation converts a short microphone recording into text and inserts the returned transcript into a text field selected by the user.
+Dictozy: Voice Dictation helps you dictate short text into supported web fields. Recording starts only when you click the visible microphone button, and the returned transcript is inserted into the field you selected.
 
 ## Data Handled
 
-The extension handles the following data only to provide voice dictation:
+Dictozy handles the following data only to provide voice dictation:
 
 - Audio recorded after the user clicks the visible microphone button.
 - The transcript returned from the speech-to-text service.
 - The enabled state, backend URL, and recording-duration preference stored locally with `chrome.storage.local`.
 - Page field information inspected locally to determine whether the focused field is supported. The extension does not transmit the page URL, browsing history, existing field contents, or surrounding page content to the backend.
 
-The extension does not activate on password or payment fields and does not record automatically or in the background.
+Dictozy does not activate on password or payment fields. It does not record automatically and does not record in the background.
 
 ## How Data Is Used
 
@@ -27,14 +27,14 @@ Data is not used for advertising, profiling, credit decisions, or sale to third 
 
 Audio and resulting transcript data are processed by:
 
-- The Voice Dictation FastAPI backend hosted on Render.
+- The Dictozy FastAPI backend hosted on Render.
 - xAI, which provides the Speech-to-Text service.
 
 Render and xAI receive the user's IP address and may process other technical request metadata as part of normal network requests under their respective policies. The extension does not request or collect GPS coordinates or precise device location. No other third party receives audio or transcripts through the extension's application flow.
 
 ## Storage And Retention
 
-The extension stores only the backend URL and recording-duration preference in Chrome local extension storage. These settings remain until the user changes them, clears extension data, or removes the extension.
+The extension stores only the enabled state, backend URL, and recording-duration preference in Chrome local extension storage. These settings remain until the user changes them, clears extension data, or removes the extension.
 
 The extension and backend application code do not intentionally persist raw audio or transcripts. Audio and transcripts are held in memory only as needed to complete a transcription request. Infrastructure and service providers may retain operational data according to their own policies.
 
@@ -44,7 +44,7 @@ Production audio requests use HTTPS. The xAI API key is stored only in backend e
 
 ## User Controls
 
-Recording begins only after the user clicks the microphone button. The user can stop recording immediately. Users may clear locally stored settings by removing the extension or clearing its extension data in Chrome.
+Recording begins only after the user clicks the microphone button. The user can stop recording immediately. Users may turn Dictozy off from the popup, change the recording limit, or clear locally stored settings by removing the extension or clearing its extension data in Chrome.
 
 ## Limited Use
 

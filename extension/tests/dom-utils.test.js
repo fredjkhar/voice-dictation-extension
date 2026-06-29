@@ -114,7 +114,7 @@ function loadDomUtils() {
 
   const source = fs.readFileSync(path.join(__dirname, "..", "dom-utils.js"), "utf8");
   vm.runInNewContext(source, context);
-  return context.FieldMicDom;
+  return context.DictozyDom;
 }
 
 test("detects supported editable fields", () => {

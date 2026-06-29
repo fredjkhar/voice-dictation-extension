@@ -1,10 +1,10 @@
 # Backend
 
-This folder contains the FastAPI backend for FieldMic: Voice Dictation.
+This folder contains the FastAPI backend for Dictozy: Voice Dictation.
 
-The backend accepts audio from the browser extension, calls xAI Speech-to-Text, and returns transcripts.
+The backend accepts user-triggered audio from the Chrome extension, calls xAI Speech-to-Text, and returns transcript text to the extension.
 
-The `/api/transcribe` endpoint validates the uploaded audio file, sends it to xAI from the backend only, and returns the transcript. The browser extension must never call xAI directly.
+The `/api/transcribe` endpoint validates the uploaded audio file, sends it to xAI from the backend only, and returns the transcript. The browser extension must never call xAI directly, and the xAI API key must stay in backend environment variables.
 
 ## Stack
 
@@ -41,7 +41,7 @@ cp .env.example .env
 
 Set `XAI_API_KEY` in `.env` before using `/api/transcribe`.
 
-Optional local hardening settings are included in `.env.example`:
+Optional hardening settings are included in `.env.example`:
 
 - `TRANSCRIPTION_ENABLED`: set to `false` to return a safe `503` from `/api/transcribe` without calling xAI.
 - `TRANSCRIBE_MAX_CONCURRENT_REQUESTS`: in-process concurrent transcription guard. Set to `0` to disable.
@@ -65,7 +65,7 @@ Health check:
 curl http://127.0.0.1:8000/health
 ```
 
-Transcription test:
+Local transcription test with a short, non-sensitive audio file:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/api/transcribe \

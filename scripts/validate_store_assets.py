@@ -62,7 +62,7 @@ def validate() -> None:
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"could not read manifest: {exc}")
     else:
-        if manifest.get("name") != "FieldMic: Voice Dictation":
+        if manifest.get("name") != "Dictozy: Voice Dictation":
             errors.append("listing name and manifest name must remain aligned")
 
     if errors:

@@ -1,12 +1,18 @@
-# FieldMic: Voice Dictation
+# Dictozy: Voice Dictation
 
-A Chrome browser extension and FastAPI backend for dictating text into web input fields using speech-to-text.
+Dictozy is a Chrome extension for dictating short text into supported web fields. Focus a field, click the visible microphone button, speak, and Dictozy inserts the returned transcript where you were writing.
+
+The project includes both the Chrome Manifest V3 extension and the FastAPI backend that performs speech-to-text through xAI. The extension never calls xAI directly and never contains the xAI API key.
 
 ![Voice dictation MVP flow](docs/images/extension-flow.svg)
 
+## Landing Page
+
+A static product landing page is available at [site/index.html](site/index.html). It is safe to open directly in a browser and uses the checked-in Chrome Web Store screenshots and icon.
+
 ## Architecture
 
-The browser extension will interact with supported page fields, record short audio clips after explicit user action, and send audio to the FastAPI backend. The backend will call xAI Speech-to-Text and return a transcript for insertion into the active field.
+The browser extension interacts with supported page fields, records short audio clips after explicit user action, and sends audio to the FastAPI backend. The backend calls xAI Speech-to-Text and returns a transcript for insertion into the active field.
 
 The extension must never call xAI directly. API keys belong only on the backend.
 
@@ -18,13 +24,13 @@ The extension must never call xAI directly. API keys belong only on the backend.
 - Python FastAPI
 - xAI Speech-to-Text API
 
-## MVP Status
+## Current Status
 
-The local MVP is working:
+Version `0.1.2` is prepared locally:
 
 - Chrome extension detects supported fields and ignores unsafe fields.
 - Microphone button records only after explicit user click.
-- Popup includes an enabled/disabled toggle for FieldMic.
+- Popup includes an enabled/disabled toggle for Dictozy.
 - Extension sends audio to the configured FastAPI backend.
 - Backend calls xAI Speech-to-Text.
 - Transcript is inserted back into the focused field.
@@ -32,10 +38,11 @@ The local MVP is working:
 - Backend tests and a local manual QA page are available.
 - Backend Docker deployment files are available.
 - Production endpoint validation and deployment smoke tests are available.
+- Chrome Web Store copy, screenshots, promo tile, icon, and release checklist are prepared under `store/`.
 
 ## Local Development
 
-The extension records a short user-triggered clip, sends it to the configured FastAPI backend, and inserts the transcript returned by the backend. The backend calls xAI Speech-to-Text using `XAI_API_KEY` from environment variables. The extension must never contain the xAI API key or call xAI directly.
+The extension records a short user-triggered clip, sends it to the configured FastAPI backend, and inserts the transcript returned by the backend. The backend calls xAI Speech-to-Text using `XAI_API_KEY` from environment variables.
 
 ## Quick Start
 
@@ -69,7 +76,7 @@ Extension setup:
 3. Click Load unpacked.
 4. Select the `extension/` folder.
 5. Reload any test page after loading or reloading the extension.
-6. Open the extension popup to enable/disable FieldMic, adjust the recording limit, or open Advanced backend settings if needed.
+6. Open the extension popup to enable/disable Dictozy, adjust the recording limit, or open Advanced backend settings if needed.
 
 QA page:
 
@@ -143,7 +150,7 @@ python scripts/smoke_test.py https://YOUR_BACKEND_HOST
 
 ## Chrome Web Store Readiness
 
-Privacy and release-preparation materials are available in [PRIVACY.md](PRIVACY.md) and [store/](store/). The generated ZIP under `dist/` is intentionally ignored by Git and should be rebuilt from the reviewed source before each draft upload.
+Privacy and release-preparation materials are available in [PRIVACY.md](PRIVACY.md), [store/](store/), and [site/](site/). The generated ZIP under `dist/` is intentionally ignored by Git and should be rebuilt from the reviewed source before each draft upload.
 
 ## Commit Readiness
 

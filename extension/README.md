@@ -1,16 +1,18 @@
-# FieldMic Chrome Extension
+# Dictozy Chrome Extension
 
-This folder contains the Chrome browser extension.
+This folder contains the Chrome extension that adds Dictozy's microphone control to supported web fields.
 
-The extension uses Manifest V3 with plain JavaScript, content scripts for page interaction, a simple popup UI, and audio recording after explicit user action.
+The extension uses Manifest V3 with plain JavaScript, content scripts for page interaction, a focused popup UI, and audio recording after explicit user action.
 
 ## Current State
 
-FieldMic can detect supported fields, show a microphone button beside the active field, record a short audio clip after the user clicks the button, send the clip to the configured FastAPI backend, and insert the backend transcript. The extension does not call xAI directly.
+Dictozy detects supported fields, shows a microphone button beside the active field, records a short audio clip after the user clicks, sends the clip to the configured FastAPI backend, and inserts the returned transcript. The extension does not call xAI directly.
 
 ## Icons
 
 The extension includes PNG icons at `16`, `32`, `48`, and `128` pixels under `icons/`. They are referenced by `manifest.json` for Chrome extension surfaces.
+
+The normalized source image is `icons/icon-source.png`, with larger exported sizes available at `256`, `512`, and `1024` pixels for future Store or site use. The release package includes only the PNG icon files listed by `scripts/package_extension.py`.
 
 ## Load Locally
 
@@ -24,7 +26,7 @@ The extension includes PNG icons at `16`, `32`, `48`, and `128` pixels under `ic
 
 The popup stores local settings with `chrome.storage.local`:
 
-- Enabled state: defaults to on. When off, no page microphone button is shown and recording cannot start.
+- Enabled state: defaults to on. When off, the page microphone button is hidden and recording cannot start.
 - Backend URL: defaults to `https://voice-dictation-extension.onrender.com/api/transcribe`.
 - Recording limit: defaults to 10 seconds and is clamped between 1 and 30 seconds.
 - Check Backend: available under Advanced and checks the corresponding `/health` endpoint without recording or uploading audio.
@@ -66,7 +68,7 @@ Extension setup:
 2. Open `chrome://extensions`.
 3. Enable Developer mode.
 4. Load or reload this `extension/` folder as an unpacked extension.
-5. Open the extension popup and confirm FieldMic is enabled, then confirm the backend URL under Advanced and the recording limit.
+5. Open the extension popup and confirm Dictozy is enabled, then confirm the backend URL under Advanced and the recording limit.
 6. Open or reload a normal web page with a text field. For local QA, use `http://127.0.0.1:8080/qa/manual-test-page.html`.
 7. Focus a supported field such as a text input or textarea.
 8. Confirm a small microphone icon button appears beside the field.
@@ -76,7 +78,7 @@ Extension setup:
 12. Click the stop icon, or wait for the configured recording limit.
 13. Confirm a transcribing status appears.
 14. Confirm the backend transcript is inserted into the focused field.
-15. Turn FieldMic off in the popup, refocus the page field, and confirm the microphone button is hidden.
+15. Turn Dictozy off in the popup, refocus the page field, and confirm the microphone button is hidden.
 
 For structured QA, use the checklist and local test page in `../qa/`.
 

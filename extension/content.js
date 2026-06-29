@@ -76,7 +76,7 @@
     getEditableField,
     insertIntoFormField,
     isSupportedField,
-  } = globalThis.FieldMicDom;
+  } = globalThis.DictozyDom;
 
   let activeField = null;
   let activeTextRange = null;
